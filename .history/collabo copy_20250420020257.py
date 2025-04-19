@@ -20,6 +20,15 @@ html = """
       --accent-color: #f8b400;
       --bg-gradient-1: #d4fc79;
       --bg-gradient-2: #96e6a1;
+      --text-color: #333;
+      --text-light: #666;
+      --card-bg: #f9fbf7;
+      
+      /* 天気アイコンの色 */
+      --sunny-color: #f8b400;
+      --cloudy-color: #7c8998;
+      --rainy-color: #4a9cd9;
+      --snowy-color: #c5d9e7;
     }
     
     * {
@@ -36,6 +45,7 @@ html = """
       display: flex;
       align-items: center;
       justify-content: center;
+      color: var(--text-color);
     }
     
     .container {
@@ -43,7 +53,7 @@ html = """
       border-radius: 24px;
       box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
       width: 100%;
-      max-width: 700px;
+      max-width: 900px;
       overflow: hidden;
       animation: fadeIn 1s ease forwards;
     }
@@ -56,90 +66,219 @@ html = """
     header {
       background: var(--primary-color);
       color: white;
-      padding: 25px;
+      padding: 30px;
       text-align: center;
       position: relative;
     }
     
     header h1 {
       margin: 0;
-      font-size: 1.8em;
+      font-size: 2em;
       font-weight: 700;
     }
     
     header .subtitle {
-      margin-top: 5px;
-      font-size: 1em;
+      margin-top: 8px;
+      font-size: 1.1em;
       opacity: 0.9;
     }
     
     .header-icon {
       position: absolute;
-      top: -15px;
-      right: -15px;
+      top: -20px;
+      right: -20px;
       background: var(--accent-color);
-      width: 60px;
-      height: 60px;
+      width: 80px;
+      height: 80px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 28px;
+      font-size: 36px;
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     }
     
     form {
-      padding: 30px;
+      padding: 40px;
     }
     
     .form-group {
-      margin-bottom: 22px;
+      margin-bottom: 28px;
     }
     
-    .auto-input-section {
-      background: #f9fbf7;
-      border-radius: 16px;
-      padding: 20px;
-      border: 2px dashed var(--primary-light);
-      margin-bottom: 30px;
+    .info-section {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 30px;
+      margin-bottom: 40px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
     }
     
-    .auto-input-title {
-      display: flex;
-      align-items: center;
+    .info-section-title {
       color: var(--primary-dark);
       font-weight: 700;
-      margin-bottom: 15px;
+      margin-bottom: 25px;
+      font-size: 1.4em;
+      display: flex;
+      align-items: center;
+    }
+    
+    .info-section-title i {
+      margin-right: 12px;
+      color: var(--primary-color);
+      font-size: 1.2em;
+    }
+    
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    
+    .info-item {
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    
+    .info-item:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* 特別な気温表示 */
+    .info-item.temperature {
+      grid-column: span 3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 25px 20px;
+    }
+    
+    .temp-display {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 10px;
+    }
+    
+    .temp-value {
+      font-size: 3.5em;
+      font-weight: 700;
+      color: var(--primary-dark);
+      margin-right: 5px;
+      line-height: 1;
+    }
+    
+    .temp-unit {
+      font-size: 1.8em;
+      color: var(--primary-color);
+      font-weight: 500;
+      margin-top: -15px;
+    }
+    
+    .info-label {
+      font-size: 0.9em;
+      color: var(--text-light);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+    }
+    
+    .info-label i {
+      color: var(--primary-color);
+      margin-right: 8px;
+      width: 20px;
+      text-align: center;
       font-size: 1.1em;
     }
     
-    .auto-input-title i {
-      margin-right: 8px;
-      color: var(--primary-color);
+    .info-value {
+      font-size: 1.3em;
+      font-weight: 500;
+      color: var(--text-color);
+      padding: 5px 0;
+    }
+    
+    /* 日付と時間の大きな表示 - バランス調整 */
+    .info-item.date-time {
+      grid-column: span 2;
+      text-align: center;
+      padding: 25px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    
+    .date-display {
+      font-size: 1.4em;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--primary-dark);
+    }
+    
+    .time-display {
+      font-size: 2.2em;
+      font-weight: 700;
+      color: var(--text-color);
+    }
+    
+    /* 地域と天気の表示 */
+    .location-weather {
+      padding: 25px 20px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    
+    .weather-icon {
+      font-size: 2.5em;
+      margin: 10px 0;
+    }
+    
+    /* 天気アイコンの色設定 */
+    .weather-icon.sunny {
+      color: var(--sunny-color);
+    }
+    
+    .weather-icon.cloudy {
+      color: var(--cloudy-color);
+    }
+    
+    .weather-icon.rainy {
+      color: var(--rainy-color);
+    }
+    
+    .weather-icon.snowy {
+      color: var(--snowy-color);
     }
     
     label {
       display: block;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
       font-weight: 500;
       color: #444;
       display: flex;
       align-items: center;
+      font-size: 1.1em;
     }
     
     .icon {
-      margin-right: 8px;
+      margin-right: 10px;
       color: var(--primary-color);
-      width: 22px;
+      width: 24px;
       text-align: center;
     }
     
     input, select, textarea {
       width: 100%;
-      padding: 14px;
-      border-radius: 12px;
+      padding: 16px;
+      border-radius: 14px;
       border: 2px solid #e0e0e0;
-      font-size: 1em;
+      font-size: 1.05em;
       font-family: 'Noto Sans JP', sans-serif;
     }
     
@@ -149,68 +288,58 @@ html = """
       box-shadow: 0 0 0 3px rgba(78, 159, 61, 0.2);
     }
     
-    .input-row {
-      display: flex;
-      gap: 15px;
-    }
-    
-    .input-row .form-group {
-      flex: 1;
+    .hidden-input {
+      display: none;
     }
     
     button {
       background: var(--primary-color);
       color: white;
-      font-size: 1.1em;
+      font-size: 1.2em;
       font-weight: 700;
       border: none;
-      border-radius: 12px;
-      padding: 16px 30px;
+      border-radius: 14px;
+      padding: 18px 30px;
       cursor: pointer;
       width: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-top: 10px;
-      box-shadow: 0 4px 12px rgba(78, 159, 61, 0.3);
+      margin-top: 20px;
+      box-shadow: 0 6px 15px rgba(78, 159, 61, 0.3);
     }
     
     button:hover {
       background: var(--primary-dark);
-      transform: translateY(-2px);
-      box-shadow: 0 6px 15px rgba(78, 159, 61, 0.4);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(78, 159, 61, 0.4);
     }
     
     button i {
-      margin-right: 10px;
-      font-size: 1.2em;
+      margin-right: 12px;
+      font-size: 1.3em;
     }
     
     ::placeholder {
       color: #aaa;
     }
     
-    .auto-input-group {
-      position: relative;
-    }
-    
-    .auto-badge {
-      position: absolute;
-      top: -12px;
-      right: 10px;
-      background: var(--accent-color);
-      color: white;
-      font-size: 0.7em;
-      padding: 3px 10px;
-      border-radius: 20px;
-      font-weight: 700;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
-    
-    @media (max-width: 600px) {
-      .input-row {
-        flex-direction: column;
-        gap: 10px;
+    @media (max-width: 768px) {
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .info-item.date-time,
+      .info-item.temperature {
+        grid-column: span 1;
+      }
+      
+      .container {
+        max-width: 100%;
+      }
+      
+      form {
+        padding: 25px;
       }
     }
   </style>
@@ -226,41 +355,59 @@ html = """
     </header>
     
     <form action="/suggest" method="post">
-      <div class="auto-input-section">
-        <div class="auto-input-title">
-          <i class="fas fa-magic"></i>自動入力情報
+      <div class="info-section">
+        <div class="info-section-title">
+          <i class="fas fa-info-circle"></i>現在の情報
         </div>
         
-        <div class="input-row">
-          <div class="form-group auto-input-group">
-            <label for="datetime"><i class="fas fa-calendar-alt icon"></i>現在日時</label>
-            <input type="datetime-local" id="datetime" name="datetime" required>
-            <div class="auto-badge">自動取得</div>
+        <div class="info-grid">
+          <!-- 日付と時間の大きな表示 -->
+          <div class="info-item date-time">
+            <div class="info-label">
+              <i class="fas fa-calendar-alt"></i>日付・時間
+            </div>
+            <div class="date-display" id="formatted-date">
+              読み込み中...
+            </div>
+            <div class="time-display" id="formatted-time">
+              --:--
+            </div>
+            <input type="datetime-local" id="datetime" name="datetime" class="hidden-input" required>
           </div>
           
-          <div class="form-group auto-input-group">
-            <label for="location"><i class="fas fa-map-marker-alt icon"></i>場所</label>
-            <input type="text" id="location" name="location" placeholder="例: 東京" required>
-            <div class="auto-badge">自動取得</div>
-          </div>
-        </div>
-        
-        <div class="input-row">
-          <div class="form-group auto-input-group">
-            <label for="temperature"><i class="fas fa-thermometer-half icon"></i>気温（℃）</label>
-            <input type="number" id="temperature" name="temperature" required>
-            <div class="auto-badge">自動取得</div>
-          </div>
-          
-          <div class="form-group auto-input-group">
-            <label for="weather"><i class="fas fa-cloud-sun icon"></i>天気</label>
-            <select id="weather" name="weather">
+          <!-- 地域と天気の表示 -->
+          <div class="info-item location-weather">
+            <div class="info-label">
+              <i class="fas fa-map-marker-alt"></i>場所・天気
+            </div>
+            <div class="info-value" id="formatted-location">
+              読み込み中...
+            </div>
+            <div class="weather-icon" id="weather-icon">
+              <i class="fas fa-cloud-sun"></i>
+            </div>
+            <div class="info-value" id="formatted-weather">
+              読み込み中...
+            </div>
+            <input type="text" id="location" name="location" class="hidden-input" required>
+            <select id="weather" name="weather" class="hidden-input">
               <option value="晴れ">晴れ</option>
               <option value="曇り">曇り</option>
               <option value="雨">雨</option>
               <option value="雪">雪</option>
             </select>
-            <div class="auto-badge">自動取得</div>
+          </div>
+          
+          <!-- 大きな気温表示 -->
+          <div class="info-item temperature">
+            <div class="info-label">
+              <i class="fas fa-thermometer-half"></i>現在の気温
+            </div>
+            <div class="temp-display">
+              <span class="temp-value" id="temp-value">--</span>
+              <span class="temp-unit">℃</span>
+            </div>
+            <input type="number" id="temperature" name="temperature" class="hidden-input" required>
           </div>
         </div>
       </div>
@@ -289,11 +436,28 @@ html = """
 
   <script>
     window.addEventListener('DOMContentLoaded', () => {
-      // 日付・時間を自動入力
+      // 日付・時間処理
       const now = new Date();
       now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+      
+      // hidden フィールドの設定
       document.getElementById('datetime').value = now.toISOString().slice(0, 16);
-
+      
+      // 表示用フォーマット
+      const options = { 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric',
+        weekday: 'long'
+      };
+      const timeOptions = {
+        hour: '2-digit',
+        minute: '2-digit'
+      };
+      
+      document.getElementById('formatted-date').textContent = now.toLocaleDateString('ja-JP', options);
+      document.getElementById('formatted-time').textContent = now.toLocaleTimeString('ja-JP', timeOptions);
+      
       // 位置情報取得＆API連携
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
@@ -311,36 +475,69 @@ html = """
             .then(res => res.json())
             .then(data => {
               if (data.success) {
-                // 場所・気温
+                // 表示用の場所・天気・気温を設定
+                document.getElementById("formatted-location").textContent = `${data.state} ${data.city}`;
+                document.getElementById("temp-value").textContent = data.temp;
+                
+                // hidden フィールドにも設定
                 document.getElementById("location").value = `${data.state} ${data.city}`;
                 document.getElementById("temperature").value = data.temp;
 
-                // 天気マッチング
+                // 天気マッチングとアイコン設定
                 const weatherDesc = data.weather;
                 const weatherSelect = document.getElementById("weather");
+                const weatherDisplay = document.getElementById("formatted-weather");
+                const weatherIconContainer = document.getElementById("weather-icon");
+                
                 const weatherKeywords = {
                   "晴": "晴れ",
                   "曇": "曇り",
                   "雨": "雨",
                   "雪": "雪"
                 };
+                
+                const weatherIcons = {
+                  "晴れ": { icon: "sun", class: "sunny" },
+                  "曇り": { icon: "cloud", class: "cloudy" },
+                  "雨": { icon: "cloud-rain", class: "rainy" },
+                  "雪": { icon: "snowflake", class: "snowy" }
+                };
 
+                let matchedWeather = "晴れ"; // デフォルト値
+                
                 for (const key in weatherKeywords) {
                   if (weatherDesc.includes(key)) {
-                    weatherSelect.value = weatherKeywords[key];
+                    matchedWeather = weatherKeywords[key];
                     break;
                   }
                 }
+                
+                weatherSelect.value = matchedWeather;
+                weatherDisplay.textContent = matchedWeather;
+                
+                const iconInfo = weatherIcons[matchedWeather];
+                weatherIconContainer.className = `weather-icon ${iconInfo.class}`;
+                weatherIconContainer.innerHTML = `<i class="fas fa-${iconInfo.icon}"></i>`;
               }
             })
             .catch(err => {
+              document.getElementById("formatted-location").textContent = "取得できませんでした";
+              document.getElementById("temp-value").textContent = "--";
+              document.getElementById("formatted-weather").textContent = "取得できませんでした";
               console.error("APIリクエストに失敗しました", err);
             });
           },
           error => {
+            document.getElementById("formatted-location").textContent = "位置情報を許可してください";
+            document.getElementById("temp-value").textContent = "--";
+            document.getElementById("formatted-weather").textContent = "位置情報を許可してください";
             console.error("位置情報の取得に失敗しました。", error);
           }
         );
+      } else {
+        document.getElementById("formatted-location").textContent = "位置情報に対応していません";
+        document.getElementById("temp-value").textContent = "--";
+        document.getElementById("formatted-weather").textContent = "位置情報に対応していません";
       }
     });
   </script>

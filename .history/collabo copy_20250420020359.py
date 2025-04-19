@@ -20,6 +20,9 @@ html = """
       --accent-color: #f8b400;
       --bg-gradient-1: #d4fc79;
       --bg-gradient-2: #96e6a1;
+      --text-color: #333;
+      --text-light: #666;
+      --card-bg: #f9fbf7;
     }
     
     * {
@@ -36,6 +39,7 @@ html = """
       display: flex;
       align-items: center;
       justify-content: center;
+      color: var(--text-color);
     }
     
     .container {
@@ -96,26 +100,61 @@ html = """
       margin-bottom: 22px;
     }
     
-    .auto-input-section {
-      background: #f9fbf7;
+    .info-section {
+      background: var(--card-bg);
       border-radius: 16px;
       padding: 20px;
-      border: 2px dashed var(--primary-light);
       margin-bottom: 30px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
     }
     
-    .auto-input-title {
-      display: flex;
-      align-items: center;
+    .info-section-title {
       color: var(--primary-dark);
       font-weight: 700;
-      margin-bottom: 15px;
+      margin-bottom: 20px;
       font-size: 1.1em;
+      display: flex;
+      align-items: center;
     }
     
-    .auto-input-title i {
+    .info-section-title i {
       margin-right: 8px;
       color: var(--primary-color);
+    }
+    
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+    }
+    
+    .info-item {
+      background: white;
+      border-radius: 12px;
+      padding: 15px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+    }
+    
+    .info-label {
+      font-size: 0.85em;
+      color: var(--text-light);
+      margin-bottom: 5px;
+      display: flex;
+      align-items: center;
+    }
+    
+    .info-label i {
+      color: var(--primary-color);
+      margin-right: 6px;
+      width: 18px;
+      text-align: center;
+    }
+    
+    .info-value {
+      font-size: 1.1em;
+      font-weight: 500;
+      color: var(--text-color);
+      padding: 3px 0;
     }
     
     label {
@@ -130,7 +169,7 @@ html = """
     .icon {
       margin-right: 8px;
       color: var(--primary-color);
-      width: 22px;
+      width: 20px;
       text-align: center;
     }
     
@@ -149,13 +188,8 @@ html = """
       box-shadow: 0 0 0 3px rgba(78, 159, 61, 0.2);
     }
     
-    .input-row {
-      display: flex;
-      gap: 15px;
-    }
-    
-    .input-row .form-group {
-      flex: 1;
+    .hidden-input {
+      display: none;
     }
     
     button {
@@ -190,28 +224,15 @@ html = """
       color: #aaa;
     }
     
-    .auto-input-group {
-      position: relative;
-    }
-    
-    .auto-badge {
-      position: absolute;
-      top: -12px;
-      right: 10px;
-      background: var(--accent-color);
-      color: white;
-      font-size: 0.7em;
-      padding: 3px 10px;
-      border-radius: 20px;
-      font-weight: 700;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
-    
     @media (max-width: 600px) {
-      .input-row {
-        flex-direction: column;
-        gap: 10px;
+      .info-grid {
+        grid-template-columns: 1fr;
       }
+    }
+    
+    /* 日付表示のフォーマット */
+    .formatted-date {
+      white-space: nowrap;
     }
   </style>
 </head>
@@ -226,41 +247,64 @@ html = """
     </header>
     
     <form action="/suggest" method="post">
-      <div class="auto-input-section">
-        <div class="auto-input-title">
-          <i class="fas fa-magic"></i>自動入力情報
+      <div class="info-section">
+        <div class="info-section-title">
+          <i class="fas fa-info-circle"></i>現在の情報
         </div>
         
-        <div class="input-row">
-          <div class="form-group auto-input-group">
-            <label for="datetime"><i class="fas fa-calendar-alt icon"></i>現在日時</label>
-            <input type="datetime-local" id="datetime" name="datetime" required>
-            <div class="auto-badge">自動取得</div>
+        <div class="info-grid">
+          <div class="info-item">
+            <div class="info-label">
+              <i class="fas fa-calendar-alt"></i>日付
+            </div>
+            <div class="info-value" id="formatted-date">
+              読み込み中...
+            </div>
+            <input type="datetime-local" id="datetime" name="datetime" class="hidden-input" required>
           </div>
           
-          <div class="form-group auto-input-group">
-            <label for="location"><i class="fas fa-map-marker-alt icon"></i>場所</label>
-            <input type="text" id="location" name="location" placeholder="例: 東京" required>
-            <div class="auto-badge">自動取得</div>
-          </div>
-        </div>
-        
-        <div class="input-row">
-          <div class="form-group auto-input-group">
-            <label for="temperature"><i class="fas fa-thermometer-half icon"></i>気温（℃）</label>
-            <input type="number" id="temperature" name="temperature" required>
-            <div class="auto-badge">自動取得</div>
+          <div class="info-item">
+            <div class="info-label">
+              <i class="fas fa-clock"></i>時間
+            </div>
+            <div class="info-value" id="formatted-time">
+              読み込み中...
+            </div>
           </div>
           
-          <div class="form-group auto-input-group">
-            <label for="weather"><i class="fas fa-cloud-sun icon"></i>天気</label>
-            <select id="weather" name="weather">
+          <div class="info-item">
+            <div class="info-label">
+              <i class="fas fa-map-marker-alt"></i>場所
+            </div>
+            <div class="info-value" id="formatted-location">
+              読み込み中...
+            </div>
+            <input type="text" id="location" name="location" class="hidden-input" required>
+          </div>
+          
+          <div class="info-item">
+            <div class="info-label">
+              <i class="fas fa-cloud-sun"></i>天気
+            </div>
+            <div class="info-value" id="formatted-weather">
+              読み込み中...
+            </div>
+            <select id="weather" name="weather" class="hidden-input">
               <option value="晴れ">晴れ</option>
               <option value="曇り">曇り</option>
               <option value="雨">雨</option>
               <option value="雪">雪</option>
             </select>
-            <div class="auto-badge">自動取得</div>
+          </div>
+          
+          <div class="info-item" style="grid-column: span 2;">
+            <div class="info-label">
+              <i class="fas fa-thermometer-half"></i>気温
+            </div>
+            <div class="info-value" id="formatted-temperature">
+              読み込み中...
+            </div>
+            <input type="number" id="temperature" name="temperature" class="hidden-input" required>
           </div>
         </div>
       </div>
@@ -289,11 +333,28 @@ html = """
 
   <script>
     window.addEventListener('DOMContentLoaded', () => {
-      // 日付・時間を自動入力
+      // 日付・時間処理
       const now = new Date();
       now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+      
+      // hidden フィールドの設定
       document.getElementById('datetime').value = now.toISOString().slice(0, 16);
-
+      
+      // 表示用フォーマット
+      const options = { 
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+      };
+      const timeOptions = {
+        hour: '2-digit',
+        minute: '2-digit'
+      };
+      
+      document.getElementById('formatted-date').textContent = now.toLocaleDateString('ja-JP', options);
+      document.getElementById('formatted-time').textContent = now.toLocaleTimeString('ja-JP', timeOptions);
+      
       // 位置情報取得＆API連携
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
@@ -311,13 +372,18 @@ html = """
             .then(res => res.json())
             .then(data => {
               if (data.success) {
-                // 場所・気温
+                // 表示用の場所・天気・気温を設定
+                document.getElementById("formatted-location").textContent = `${data.state} ${data.city}`;
+                document.getElementById("formatted-temperature").textContent = `${data.temp}℃`;
+                
+                // hidden フィールドにも設定
                 document.getElementById("location").value = `${data.state} ${data.city}`;
                 document.getElementById("temperature").value = data.temp;
 
                 // 天気マッチング
                 const weatherDesc = data.weather;
                 const weatherSelect = document.getElementById("weather");
+                const weatherDisplay = document.getElementById("formatted-weather");
                 const weatherKeywords = {
                   "晴": "晴れ",
                   "曇": "曇り",
@@ -328,19 +394,40 @@ html = """
                 for (const key in weatherKeywords) {
                   if (weatherDesc.includes(key)) {
                     weatherSelect.value = weatherKeywords[key];
+                    weatherDisplay.textContent = weatherKeywords[key];
+                    
+                    // 天気に応じたアイコンを追加
+                    const weatherIcons = {
+                      "晴れ": "sun",
+                      "曇り": "cloud",
+                      "雨": "cloud-rain",
+                      "雪": "snowflake"
+                    };
+                    
+                    weatherDisplay.innerHTML = `<i class="fas fa-${weatherIcons[weatherKeywords[key]]}"></i> ${weatherKeywords[key]}`;
                     break;
                   }
                 }
               }
             })
             .catch(err => {
+              document.getElementById("formatted-location").textContent = "取得できませんでした";
+              document.getElementById("formatted-temperature").textContent = "取得できませんでした";
+              document.getElementById("formatted-weather").textContent = "取得できませんでした";
               console.error("APIリクエストに失敗しました", err);
             });
           },
           error => {
+            document.getElementById("formatted-location").textContent = "位置情報を許可してください";
+            document.getElementById("formatted-temperature").textContent = "位置情報を許可してください";
+            document.getElementById("formatted-weather").textContent = "位置情報を許可してください";
             console.error("位置情報の取得に失敗しました。", error);
           }
         );
+      } else {
+        document.getElementById("formatted-location").textContent = "位置情報に対応していません";
+        document.getElementById("formatted-temperature").textContent = "位置情報に対応していません";
+        document.getElementById("formatted-weather").textContent = "位置情報に対応していません";
       }
     });
   </script>

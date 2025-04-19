@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>今日のコーディネート提案</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #d4fc79, #96e6a1);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    form {
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      width: 100%;
+      max-width: 600px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+      color: #444;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 12px;
+      margin-top: 8px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 1em;
+      box-sizing: border-box;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 14px 30px;
+      background: #66bb6a;
+      color: white;
+      font-size: 1.1em;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    button:hover {
+      background: #4caf50;
+    }
+
+    .icon {
+      margin-right: 8px;
+      color: #66bb6a;
+    }
+  </style>
+</head>
+<body>
+  <form action="/suggest" method="post">
+    <h2><i class="fas fa-tshirt icon"></i>今日のコーディネート提案フォーム</h2>
+
+    <label for="datetime"><i class="fas fa-calendar-alt icon"></i>現在日時:</label>
+    <input type="datetime-local" id="datetime" name="datetime" required>
+
+    <label for="location"><i class="fas fa-map-marker-alt icon"></i>場所:</label>
+    <input type="text" id="location" name="location" placeholder="位置情報から取得中…" required>
+
+    <label for="temperature"><i class="fas fa-thermometer-half icon"></i>気温（℃）:</label>
+    <input type="number" id="temperature" name="temperature" placeholder="取得中…" required>
+
+    <label for="weather"><i class="fas fa-cloud-sun icon"></i>天気:</label>
+    <select id="weather" name="weather">
+      <option value="晴れ">晴れ</option>
+      <option value="曇り">曇り</option>
+      <option value="雨">雨</option>
+      <option value="雪">雪</option>
+    </select>
+
+    <label for="favorite_color"><i class="fas fa-palette icon"></i>好きな色:</label>
+    <input type="text" id="favorite_color" name="favorite_color" placeholder="例: 青">
+
+    <label for="owned_clothes"><i class="fas fa-shirt icon"></i>持っている服（カンマ区切り）:</label>
+    <textarea id="owned_clothes" name="owned_clothes" rows="3" placeholder="例: 青いジーンズ, 白いTシャツ, ベージュのジャケット"></textarea>
+
+    <label for="mood"><i class="fas fa-smile icon"></i>今日の気分:</label>
+    <input type="text" id="mood" name="mood" placeholder="例: 青空のような爽やかな気分">
+
+    <button type="submit"><i class="fas fa-magic icon"></i>コーディネートを提案して！</button>
+  </form>
+
+  <script>
+    // 日時自動入力
+    window.addEventListener('DOMContentLoaded', () => {
+      const now = new Date();
+      now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+      document.getElementById('datetime').value = now.toISOString().slice(0, 16);
+    });
+
+    // 位置情報の取得とAPIによる気温・天気取得
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(async (position) => {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+
+        // --- 1. OpenWeatherから気温・天気取得 ---
+        const apiKey = "WHETHER_API_KEY"; // ← 自分のOpenWeather APIキーをここに！
+        const weatherURL = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&lang=ja&appid=${apiKey}`;
+        const res = await fetch(weatherURL);
+        const data = await res.json();
+
+        // 場所名と気温を自動入力
+        document.getElementById('location').value = data.name;
+        document.getElementById('temperature').value = Math.round(data.main.temp);
+
+        // 天気選択も自動で
+        const weather = data.weather[0].main;
+        let weatherValue = "晴れ";
+        if (weather.includes("Rain")) weatherValue = "雨";
+        else if (weather.includes("Cloud")) weatherValue = "曇り";
+        else if (weather.includes("Snow")) weatherValue = "雪";
+        document.getElementById('weather').value = weatherValue;
+      }, (err) => {
+        alert("位置情報の取得に失敗しました。場所・気温を手動で入力してください。");
+      });
+    } else {
+      alert("このブラウザでは位置情報が利用できません。");
+    }
+  </script>
+</body>
+</html>

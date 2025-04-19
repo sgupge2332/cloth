@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>今日のコーディネート提案</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background-color: #f0f8ff; }
+    form { background: white; padding: 20px; border-radius: 10px; max-width: 600px; margin: auto; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    input, select, textarea { width: 100%; padding: 10px; margin: 10px 0; border-radius: 5px; border: 1px solid #ccc; }
+    button { padding: 10px 20px; background: #0077cc; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    button:hover { background: #005fa3; }
+  </style>
+</head>
+<body>
+  <h2>今日のコーディネート提案フォーム</h2>
+  <form action="/suggest" method="post">
+    <label for="date">日付:</label>
+    <input type="date" id="date" name="date" required>
+
+    <label for="location">場所:</label>
+    <input type="text" id="location" name="location" placeholder="例: 東京" required>
+
+    <label for="temperature">気温（℃）:</label>
+    <input type="number" id="temperature" name="temperature" required>
+
+    <label for="weather">天気:</label>
+    <select id="weather" name="weather">
+      <option value="晴れ">晴れ</option>
+      <option value="曇り">曇り</option>
+      <option value="雨">雨</option>
+      <option value="雪">雪</option>
+    </select>
+
+    <label for="favorite_color">好きな色:</label>
+    <input type="text" id="favorite_color" name="favorite_color" placeholder="例: 青">
+
+    <label for="owned_clothes">持っている服（カンマ区切り）:</label>
+    <textarea id="owned_clothes" name="owned_clothes" rows="3" placeholder="例: 青いジーンズ, 白いTシャツ, ベージュのジャケット"></textarea>
+
+    <label for="mood">今日の気分:</label>
+    <input type="text" id="mood" name="mood" placeholder="例: 青空のような爽やかな気分">
+
+    <button type="submit">コーディネートを提案して！</button>
+  </form>
+</body>
+</html>

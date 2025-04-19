@@ -1,0 +1,36 @@
+<script>
+  const locationInput = document.getElementById('location');
+
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(success, error);
+  } else {
+    locationInput.placeholder = '位置情報が取得できませんでした';
+  }
+
+  function success(position) {
+    const lat = position.coords.latitude;
+    const lng = position.coords.longitude;
+    const apiKey = 'YOUR_OPENCAGE_API_KEY'; // ←ここを自分のAPIキーに変更
+
+    fetch(`https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lng}&key=${apiKey}&language=ja`)
+      .then(response => response.json())
+      .then(data => {
+        if (data.results.length > 0) {
+          const place = data.results[0].components.city || 
+                        data.results[0].components.town || 
+                        data.results[0].components.village || 
+                        data.results[0].components.state;
+          locationInput.value = place || '不明な場所';
+        } else {
+          locationInput.placeholder = '場所が特定できませんでした';
+        }
+      })
+      .catch(() => {
+        locationInput.placeholder = '場所情報の取得に失敗しました';
+      });
+  }
+
+  function error(err) {
+    locationInput.placeholder = '位置情報が拒否されました';
+  }
+</script>

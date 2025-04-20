@@ -471,6 +471,7 @@ html = """
         <input type="text" id="mood" name="mood" placeholder="例: 爽やか、カジュアル、クール...">
       </div>
       
+    <form action="result.html" method="get">
       <button type="submit">
         <i class="fas fa-wand-magic-sparkles"></i>
         コーディネートを提案

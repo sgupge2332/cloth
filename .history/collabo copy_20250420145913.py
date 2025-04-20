@@ -20,10 +20,6 @@ html = """
       --accent-color: #f8b400;
       --bg-gradient-1: #d4fc79;
       --bg-gradient-2: #96e6a1;
-      --sunny: #f8b400;
-      --cloudy: #8c9cb5;
-      --rainy: #689ad8;
-      --snowy: #c5e3fa;
     }
     
     * {
@@ -122,7 +118,7 @@ html = """
       color: var(--primary-color);
     }
     
-    /* 2行2列のグリッドスタイル */
+    /* 2行2列の新しいグリッドスタイル */
     .info-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -146,148 +142,28 @@ html = """
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       border: 2px solid var(--primary-light);
       overflow: hidden;
+      text-align: center;
       height: 100%;
       display: flex;
-      flex-direction: row;
-      align-items: center;
-      min-height: 100px;
-    }
-    
-    /* 天気パネルの特別スタイル */
-    .weather-panel {
-      padding: 10px;
-      text-align: center;
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-    
-    .weather-panel .label-container {
-      border-right: none;
-      width: 100%;
-      padding-right: 0;
-      margin-bottom: 10px;
-    }
-    
-    .weather-panel .value-container {
-      width: 100%;
-      padding-left: 0;
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    
-    .weather-icon {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      background: var(--sunny);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 10px;
-      font-size: 28px;
-      color: white;
-      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
-    }
-    
-    .weather-icon.sunny {
-      background: var(--sunny);
-      color: white;
-    }
-    
-    .weather-icon.cloudy {
-      background: var(--cloudy);
-      color: white;
-    }
-    
-    .weather-icon.rainy {
-      background: var(--rainy);
-      color: white;
-    }
-    
-    .weather-icon.snowy {
-      background: var(--snowy);
-      color: white;
-    }
-    
-    /* 天気アニメーション */
-    @keyframes sunny-animation {
-      0% { transform: scale(1) rotate(0deg); }
-      50% { transform: scale(1.1) rotate(15deg); }
-      100% { transform: scale(1) rotate(0deg); }
-    }
-    
-    @keyframes cloudy-animation {
-      0% { transform: translateX(0); }
-      50% { transform: translateX(5px); }
-      100% { transform: translateX(0); }
-    }
-    
-    @keyframes rainy-animation {
-      0% { transform: translateY(0); }
-      50% { transform: translateY(2px); }
-      100% { transform: translateY(0); }
-    }
-    
-    @keyframes snowy-animation {
-      0% { transform: rotate(0deg); }
-      50% { transform: rotate(10deg); }
-      100% { transform: rotate(0deg); }
-    }
-    
-    .weather-icon.sunny i {
-      animation: sunny-animation 3s infinite ease-in-out;
-    }
-    
-    .weather-icon.cloudy i {
-      animation: cloudy-animation 3s infinite ease-in-out;
-    }
-    
-    .weather-icon.rainy i {
-      animation: rainy-animation 1.5s infinite ease-in-out;
-    }
-    
-    .weather-icon.snowy i {
-      animation: snowy-animation 3s infinite ease-in-out;
-    }
-    
-    /* 左側のラベル部分 */
-    .label-container {
-      display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      width: 40%;
-      border-right: 1px dashed var(--primary-light);
-      padding-right: 10px;
-    }
-    
-    .auto-input-group .icon {
-      font-size: 1.5em;
-      color: var(--primary-color);
-      display: block;
-      margin-bottom: 5px;
-      text-align: center;
+      min-height: 120px;
     }
     
     .auto-input-group .label {
-      font-size: 0.85em;
+      font-size: 0.9em;
       font-weight: 500;
       color: var(--primary-dark);
-      text-align: center;
+      margin-bottom: 3px;
       display: block;
     }
     
-    /* 右側の値部分 */
-    .value-container {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      width: 60%;
-      padding-left: 10px;
+    .auto-input-group .icon {
+      font-size: 1.8em;
+      color: var(--primary-color);
+      display: block;
+      margin-bottom: 5px;
       text-align: center;
     }
     
@@ -302,19 +178,20 @@ html = """
     }
     
     .auto-input-group .value {
-      font-size: 1.25em;
+      font-size: 1.4em;
       font-weight: 700;
       color: var(--primary-dark);
+      text-align: center;
       display: block;
       line-height: 1.2;
     }
     
     .auto-input-group .secondary-value {
-      font-size: 1em;
+      font-size: 1.1em;
       font-weight: 500;
       color: #555;
+      text-align: center;
       display: block;
-      margin-top: 3px;
     }
     
     .auto-input-group .unit {
@@ -322,6 +199,17 @@ html = """
       color: #666;
       display: inline-block;
       margin-left: 2px;
+    }
+    
+    /* イラスト風の背景要素 */
+    .icon-bg {
+      position: absolute;
+      bottom: -5px;
+      right: -5px;
+      font-size: 2.5em;
+      opacity: 0.07;
+      color: var(--primary-color);
+      transform: rotate(-15deg);
     }
     
     label {
@@ -406,46 +294,39 @@ html = """
         
         <div class="info-grid">
           <div class="auto-input-group">
-            <div class="label-container">
-              <i class="fas fa-calendar-alt icon"></i>
-              <div class="label">日時</div>
-            </div>
-            <div class="value-container">
-              <div class="value" id="date-display">4月20日</div>
-              <div class="secondary-value" id="time-display">14:30</div>
+            <i class="fas fa-calendar-alt icon"></i>
+            <div class="label">日時</div>
+            <div class="value" id="date-display">4月20日</div>
+            <div class="secondary-value" id="time-display">14:30</div>
+            <div class="icon-bg">
+              <i class="fas fa-calendar-alt"></i>
             </div>
           </div>
           
           <div class="auto-input-group">
-            <div class="label-container">
-              <i class="fas fa-map-marker-alt icon"></i>
-              <div class="label">現在地</div>
-            </div>
-            <div class="value-container">
-              <div class="value" id="location-display">東京都</div>
+            <i class="fas fa-map-marker-alt icon"></i>
+            <div class="label">現在地</div>
+            <div class="value" id="location-display">東京都</div>
+            <div class="icon-bg">
+              <i class="fas fa-map-marker-alt"></i>
             </div>
           </div>
         
           <div class="auto-input-group">
-            <div class="label-container">
-              <i class="fas fa-thermometer-half icon"></i>
-              <div class="label">気温</div>
-            </div>
-            <div class="value-container">
-              <div class="value" id="temperature-display">22<span class="unit">℃</span></div>
+            <i class="fas fa-thermometer-half icon"></i>
+            <div class="label">気温</div>
+            <div class="value" id="temperature-display">22<span class="unit">℃</span></div>
+            <div class="icon-bg">
+              <i class="fas fa-thermometer-half"></i>
             </div>
           </div>
           
-          <!-- 天気パネル - イラスト風 -->
-          <div class="auto-input-group weather-panel">
-            <div class="label-container">
-              <div class="label">天気</div>
-            </div>
-            <div class="value-container">
-              <div class="weather-icon sunny" id="weather-icon">
-                <i class="fas fa-sun"></i>
-              </div>
-              <div class="value" id="weather-display">晴れ</div>
+          <div class="auto-input-group">
+            <i class="fas fa-cloud-sun icon"></i>
+            <div class="label">天気</div>
+            <div class="value" id="weather-display">晴れ</div>
+            <div class="icon-bg">
+              <i class="fas fa-cloud-sun"></i>
             </div>
           </div>
         </div>
@@ -527,39 +408,15 @@ html = """
                 };
 
                 let weatherValue = "晴れ"; // デフォルト
-                let weatherIconClass = "sunny";
-                let weatherIconHTML = '<i class="fas fa-sun"></i>';
-                
                 for (const key in weatherKeywords) {
                   if (weatherDesc.includes(key)) {
                     weatherValue = weatherKeywords[key];
-                    
-                    // アイコンの設定
-                    if (weatherValue === "晴れ") {
-                      weatherIconClass = "sunny";
-                      weatherIconHTML = '<i class="fas fa-sun"></i>';
-                    } else if (weatherValue === "曇り") {
-                      weatherIconClass = "cloudy";
-                      weatherIconHTML = '<i class="fas fa-cloud"></i>';
-                    } else if (weatherValue === "雨") {
-                      weatherIconClass = "rainy";
-                      weatherIconHTML = '<i class="fas fa-cloud-rain"></i>';
-                    } else if (weatherValue === "雪") {
-                      weatherIconClass = "snowy";
-                      weatherIconHTML = '<i class="fas fa-snowflake"></i>';
-                    }
-                    
                     break;
                   }
                 }
                 
                 document.getElementById("weather-display").textContent = weatherValue;
                 document.getElementById("weather").value = weatherValue;
-                
-                // 天気アイコンの更新
-                const weatherIcon = document.getElementById("weather-icon");
-                weatherIcon.className = `weather-icon ${weatherIconClass}`;
-                weatherIcon.innerHTML = weatherIconHTML;
               } else {
                 // APIからデータが取得できない場合のデフォルト値
                 document.getElementById("location-display").textContent = "東京都";

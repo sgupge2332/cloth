@@ -160,14 +160,15 @@ html = """
       position: relative;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
+      justify-content: center;
+      align-items: center;
     }
     
     .weather-panel .label-container {
       border-right: none;
       width: 100%;
       padding-right: 0;
-      margin-bottom: 10px;
+      margin-bottom: 5px;
     }
     
     .weather-panel .value-container {
@@ -180,15 +181,14 @@ html = """
     }
     
     .weather-icon {
-      width: 60px;
-      height: 60px;
+      width: 70px;
+      height: 70px;
       border-radius: 50%;
       background: var(--sunny);
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 10px;
-      font-size: 28px;
+      font-size: 32px;
       color: white;
       box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
     }
@@ -398,7 +398,7 @@ html = """
       </div>
     </header>
     
-    <form action="/suggest" method="post">
+    <form action="result.html" method="post" id="coord-form">
       <div class="auto-input-section">
         <div class="auto-input-title">
           <i class="fas fa-magic"></i>今日のコンディション
@@ -436,7 +436,7 @@ html = """
             </div>
           </div>
           
-          <!-- 天気パネル - イラスト風 -->
+          <!-- 天気パネル - アイコンのみ -->
           <div class="auto-input-group weather-panel">
             <div class="label-container">
               <div class="label">天気</div>
@@ -445,7 +445,7 @@ html = """
               <div class="weather-icon sunny" id="weather-icon">
                 <i class="fas fa-sun"></i>
               </div>
-              <div class="value" id="weather-display">晴れ</div>
+              <!-- 天気の文字表示を削除 -->
             </div>
           </div>
         </div>
@@ -471,14 +471,16 @@ html = """
         <input type="text" id="mood" name="mood" placeholder="例: 爽やか、カジュアル、クール...">
       </div>
       
-      <button type="submit">
+      <button type="button" onclick="submitForm()">
         <i class="fas fa-wand-magic-sparkles"></i>
         コーディネートを提案
       </button>
     </form>
-  </div>
 
   <script>
+    function submitForm() {
+      document.getElementById('coord-form').submit();
+    }
     window.addEventListener('DOMContentLoaded', () => {
       // 日付・時間を設定
       const now = new Date();
@@ -553,7 +555,8 @@ html = """
                   }
                 }
                 
-                document.getElementById("weather-display").textContent = weatherValue;
+                // 天気の文字表示を削除
+                // document.getElementById("weather-display").textContent = weatherValue;
                 document.getElementById("weather").value = weatherValue;
                 
                 // 天気アイコンの更新
@@ -568,7 +571,8 @@ html = """
                 document.getElementById("temperature-display").innerHTML = "22<span class='unit'>℃</span>";
                 document.getElementById("temperature").value = "22";
                 
-                document.getElementById("weather-display").textContent = "晴れ";
+                // 天気の文字表示を削除
+                // document.getElementById("weather-display").textContent = "晴れ";
                 document.getElementById("weather").value = "晴れ";
               }
             })
@@ -581,7 +585,8 @@ html = """
               document.getElementById("temperature-display").innerHTML = "22<span class='unit'>℃</span>";
               document.getElementById("temperature").value = "22";
               
-              document.getElementById("weather-display").textContent = "晴れ";
+              // 天気の文字表示を削除
+              // document.getElementById("weather-display").textContent = "晴れ";
               document.getElementById("weather").value = "晴れ";
             });
           },
@@ -594,7 +599,8 @@ html = """
             document.getElementById("temperature-display").innerHTML = "22<span class='unit'>℃</span>";
             document.getElementById("temperature").value = "22";
             
-            document.getElementById("weather-display").textContent = "晴れ";
+            // 天気の文字表示を削除
+            // document.getElementById("weather-display").textContent = "晴れ";
             document.getElementById("weather").value = "晴れ";
           }
         );
@@ -606,7 +612,8 @@ html = """
         document.getElementById("temperature-display").innerHTML = "22<span class='unit'>℃</span>";
         document.getElementById("temperature").value = "22";
         
-        document.getElementById("weather-display").textContent = "晴れ";
+        // 天気の文字表示を削除
+        // document.getElementById("weather-display").textContent = "晴れ";
         document.getElementById("weather").value = "晴れ";
       }
     });

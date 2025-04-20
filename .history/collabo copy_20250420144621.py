@@ -20,10 +20,6 @@ html = """
       --accent-color: #f8b400;
       --bg-gradient-1: #d4fc79;
       --bg-gradient-2: #96e6a1;
-      --sunny: #f8b400;
-      --cloudy: #8c9cb5;
-      --rainy: #689ad8;
-      --snowy: #c5e3fa;
     }
     
     * {
@@ -122,172 +118,32 @@ html = """
       color: var(--primary-color);
     }
     
-    /* 2行2列のグリッドスタイル */
-    .info-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      grid-template-rows: repeat(2, 1fr);
-      gap: 15px;
-    }
-    
-    @media (max-width: 600px) {
-      .info-grid {
-        grid-template-columns: repeat(2, 1fr);
-        grid-template-rows: repeat(2, 1fr);
-        gap: 10px;
-      }
-    }
-    
+    /* 新しい auto-input-group のスタイル */
     .auto-input-group {
       position: relative;
       background: white;
-      border-radius: 12px;
-      padding: 15px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      border: 2px solid var(--primary-light);
+      border-radius: 16px;
+      padding: 25px 20px 20px;
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+      border: 3px solid var(--primary-light);
+      margin-bottom: 25px;
       overflow: hidden;
-      height: 100%;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      min-height: 100px;
     }
     
-    /* 天気パネルの特別スタイル */
-    .weather-panel {
-      padding: 10px;
-      text-align: center;
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-    
-    .weather-panel .label-container {
-      border-right: none;
-      width: 100%;
-      padding-right: 0;
-      margin-bottom: 10px;
-    }
-    
-    .weather-panel .value-container {
-      width: 100%;
-      padding-left: 0;
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    
-    .weather-icon {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      background: var(--sunny);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 10px;
-      font-size: 28px;
-      color: white;
-      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
-    }
-    
-    .weather-icon.sunny {
-      background: var(--sunny);
-      color: white;
-    }
-    
-    .weather-icon.cloudy {
-      background: var(--cloudy);
-      color: white;
-    }
-    
-    .weather-icon.rainy {
-      background: var(--rainy);
-      color: white;
-    }
-    
-    .weather-icon.snowy {
-      background: var(--snowy);
-      color: white;
-    }
-    
-    /* 天気アニメーション */
-    @keyframes sunny-animation {
-      0% { transform: scale(1) rotate(0deg); }
-      50% { transform: scale(1.1) rotate(15deg); }
-      100% { transform: scale(1) rotate(0deg); }
-    }
-    
-    @keyframes cloudy-animation {
-      0% { transform: translateX(0); }
-      50% { transform: translateX(5px); }
-      100% { transform: translateX(0); }
-    }
-    
-    @keyframes rainy-animation {
-      0% { transform: translateY(0); }
-      50% { transform: translateY(2px); }
-      100% { transform: translateY(0); }
-    }
-    
-    @keyframes snowy-animation {
-      0% { transform: rotate(0deg); }
-      50% { transform: rotate(10deg); }
-      100% { transform: rotate(0deg); }
-    }
-    
-    .weather-icon.sunny i {
-      animation: sunny-animation 3s infinite ease-in-out;
-    }
-    
-    .weather-icon.cloudy i {
-      animation: cloudy-animation 3s infinite ease-in-out;
-    }
-    
-    .weather-icon.rainy i {
-      animation: rainy-animation 1.5s infinite ease-in-out;
-    }
-    
-    .weather-icon.snowy i {
-      animation: snowy-animation 3s infinite ease-in-out;
-    }
-    
-    /* 左側のラベル部分 */
-    .label-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      width: 40%;
-      border-right: 1px dashed var(--primary-light);
-      padding-right: 10px;
+    .auto-input-group label {
+      font-size: 1.2em;
+      font-weight: 700;
+      color: var(--primary-dark);
+      margin-bottom: 15px;
+      display: block;
     }
     
     .auto-input-group .icon {
-      font-size: 1.5em;
+      font-size: 2.2em;
+      margin-right: 12px;
       color: var(--primary-color);
       display: block;
-      margin-bottom: 5px;
-      text-align: center;
-    }
-    
-    .auto-input-group .label {
-      font-size: 0.85em;
-      font-weight: 500;
-      color: var(--primary-dark);
-      text-align: center;
-      display: block;
-    }
-    
-    /* 右側の値部分 */
-    .value-container {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      width: 60%;
-      padding-left: 10px;
+      margin-bottom: 10px;
       text-align: center;
     }
     
@@ -297,31 +153,44 @@ html = """
       top: 0;
       left: 0;
       right: 0;
-      height: 4px;
+      height: 8px;
       background: var(--primary-color);
     }
     
-    .auto-input-group .value {
-      font-size: 1.25em;
-      font-weight: 700;
-      color: var(--primary-dark);
-      display: block;
-      line-height: 1.2;
-    }
-    
-    .auto-input-group .secondary-value {
-      font-size: 1em;
+    .auto-input-group input,
+    .auto-input-group select {
+      font-size: 1.1em;
+      padding: 15px;
+      border-radius: 12px;
+      border: 2px solid #e0e0e0;
+      font-family: 'Noto Sans JP', sans-serif;
+      text-align: center;
       font-weight: 500;
-      color: #555;
-      display: block;
-      margin-top: 3px;
     }
     
-    .auto-input-group .unit {
+    .auto-badge {
+      position: absolute;
+      top: -12px;
+      right: 10px;
+      background: var(--accent-color);
+      color: white;
       font-size: 0.8em;
-      color: #666;
-      display: inline-block;
-      margin-left: 2px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-weight: 700;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      z-index: 1;
+    }
+    
+    /* イラスト風の背景要素 */
+    .icon-bg {
+      position: absolute;
+      bottom: -10px;
+      right: -10px;
+      font-size: 4em;
+      opacity: 0.1;
+      color: var(--primary-color);
+      transform: rotate(-15deg);
     }
     
     label {
@@ -355,6 +224,21 @@ html = """
       box-shadow: 0 0 0 3px rgba(78, 159, 61, 0.2);
     }
     
+    .input-row {
+      display: flex;
+      gap: 15px;
+    }
+    
+    .input-row .form-group {
+      flex: 1;
+    }
+  
+    /* auto-input-groupのinput-row向け調整 */
+    .auto-input-section .input-row {
+      flex-direction: column;
+      gap: 0;
+    }
+    
     button {
       background: var(--primary-color);
       color: white;
@@ -386,6 +270,13 @@ html = """
     ::placeholder {
       color: #aaa;
     }
+    
+    @media (max-width: 600px) {
+      .input-row {
+        flex-direction: column;
+        gap: 10px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -401,59 +292,55 @@ html = """
     <form action="/suggest" method="post">
       <div class="auto-input-section">
         <div class="auto-input-title">
-          <i class="fas fa-magic"></i>今日のコンディション
+          <i class="fas fa-magic"></i>自動入力情報
         </div>
         
-        <div class="info-grid">
+        <div class="input-row">
           <div class="auto-input-group">
-            <div class="label-container">
-              <i class="fas fa-calendar-alt icon"></i>
-              <div class="label">日時</div>
-            </div>
-            <div class="value-container">
-              <div class="value" id="date-display">4月20日</div>
-              <div class="secondary-value" id="time-display">14:30</div>
+            <div class="auto-badge">自動取得</div>
+            <i class="fas fa-calendar-alt icon"></i>
+            <label for="datetime">現在日時</label>
+            <input type="datetime-local" id="datetime" name="datetime" required>
+            <div class="icon-bg">
+              <i class="fas fa-calendar-alt"></i>
             </div>
           </div>
           
           <div class="auto-input-group">
-            <div class="label-container">
-              <i class="fas fa-map-marker-alt icon"></i>
-              <div class="label">現在地</div>
-            </div>
-            <div class="value-container">
-              <div class="value" id="location-display">東京都</div>
+            <div class="auto-badge">自動取得</div>
+            <i class="fas fa-map-marker-alt icon"></i>
+            <label for="location">場所</label>
+            <input type="text" id="location" name="location" placeholder="例: 東京" required>
+            <div class="icon-bg">
+              <i class="fas fa-map-marker-alt"></i>
             </div>
           </div>
         
           <div class="auto-input-group">
-            <div class="label-container">
-              <i class="fas fa-thermometer-half icon"></i>
-              <div class="label">気温</div>
-            </div>
-            <div class="value-container">
-              <div class="value" id="temperature-display">22<span class="unit">℃</span></div>
+            <div class="auto-badge">自動取得</div>
+            <i class="fas fa-thermometer-half icon"></i>
+            <label for="temperature">気温（℃）</label>
+            <input type="number" id="temperature" name="temperature" required>
+            <div class="icon-bg">
+              <i class="fas fa-thermometer-half"></i>
             </div>
           </div>
           
-          <!-- 天気パネル - イラスト風 -->
-          <div class="auto-input-group weather-panel">
-            <div class="label-container">
-              <div class="label">天気</div>
-            </div>
-            <div class="value-container">
-              <div class="weather-icon sunny" id="weather-icon">
-                <i class="fas fa-sun"></i>
-              </div>
-              <div class="value" id="weather-display">晴れ</div>
+          <div class="auto-input-group">
+            <div class="auto-badge">自動取得</div>
+            <i class="fas fa-cloud-sun icon"></i>
+            <label for="weather">天気</label>
+            <select id="weather" name="weather">
+              <option value="晴れ">晴れ</option>
+              <option value="曇り">曇り</option>
+              <option value="雨">雨</option>
+              <option value="雪">雪</option>
+            </select>
+            <div class="icon-bg">
+              <i class="fas fa-cloud-sun"></i>
             </div>
           </div>
         </div>
-        
-        <input type="hidden" id="datetime" name="datetime">
-        <input type="hidden" id="location" name="location">
-        <input type="hidden" id="temperature" name="temperature">
-        <input type="hidden" id="weather" name="weather">
       </div>
       
       <div class="form-group">
@@ -480,16 +367,8 @@ html = """
 
   <script>
     window.addEventListener('DOMContentLoaded', () => {
-      // 日付・時間を設定
+      // 日付・時間を自動入力
       const now = new Date();
-      const options = { month: 'long', day: 'numeric' };
-      const dateStr = now.toLocaleDateString('ja-JP', options);
-      const timeStr = now.toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' });
-      
-      document.getElementById('date-display').textContent = dateStr;
-      document.getElementById('time-display').textContent = timeStr;
-      
-      // hidden inputにも値を設定
       now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
       document.getElementById('datetime').value = now.toISOString().slice(0, 16);
 
@@ -510,15 +389,13 @@ html = """
             .then(res => res.json())
             .then(data => {
               if (data.success) {
-                // 場所・気温・天気を表示用と隠し入力に設定
-                document.getElementById("location-display").textContent = `${data.state} ${data.city}`;
+                // 場所・気温
                 document.getElementById("location").value = `${data.state} ${data.city}`;
-                
-                document.getElementById("temperature-display").innerHTML = `${data.temp}<span class="unit">℃</span>`;
                 document.getElementById("temperature").value = data.temp;
 
                 // 天気マッチング
                 const weatherDesc = data.weather;
+                const weatherSelect = document.getElementById("weather");
                 const weatherKeywords = {
                   "晴": "晴れ",
                   "曇": "曇り",
@@ -526,88 +403,22 @@ html = """
                   "雪": "雪"
                 };
 
-                let weatherValue = "晴れ"; // デフォルト
-                let weatherIconClass = "sunny";
-                let weatherIconHTML = '<i class="fas fa-sun"></i>';
-                
                 for (const key in weatherKeywords) {
                   if (weatherDesc.includes(key)) {
-                    weatherValue = weatherKeywords[key];
-                    
-                    // アイコンの設定
-                    if (weatherValue === "晴れ") {
-                      weatherIconClass = "sunny";
-                      weatherIconHTML = '<i class="fas fa-sun"></i>';
-                    } else if (weatherValue === "曇り") {
-                      weatherIconClass = "cloudy";
-                      weatherIconHTML = '<i class="fas fa-cloud"></i>';
-                    } else if (weatherValue === "雨") {
-                      weatherIconClass = "rainy";
-                      weatherIconHTML = '<i class="fas fa-cloud-rain"></i>';
-                    } else if (weatherValue === "雪") {
-                      weatherIconClass = "snowy";
-                      weatherIconHTML = '<i class="fas fa-snowflake"></i>';
-                    }
-                    
+                    weatherSelect.value = weatherKeywords[key];
                     break;
                   }
                 }
-                
-                document.getElementById("weather-display").textContent = weatherValue;
-                document.getElementById("weather").value = weatherValue;
-                
-                // 天気アイコンの更新
-                const weatherIcon = document.getElementById("weather-icon");
-                weatherIcon.className = `weather-icon ${weatherIconClass}`;
-                weatherIcon.innerHTML = weatherIconHTML;
-              } else {
-                // APIからデータが取得できない場合のデフォルト値
-                document.getElementById("location-display").textContent = "東京都";
-                document.getElementById("location").value = "東京都";
-                
-                document.getElementById("temperature-display").innerHTML = "22<span class='unit'>℃</span>";
-                document.getElementById("temperature").value = "22";
-                
-                document.getElementById("weather-display").textContent = "晴れ";
-                document.getElementById("weather").value = "晴れ";
               }
             })
             .catch(err => {
               console.error("APIリクエストに失敗しました", err);
-              // エラー時のデフォルト値設定
-              document.getElementById("location-display").textContent = "東京都";
-              document.getElementById("location").value = "東京都";
-              
-              document.getElementById("temperature-display").innerHTML = "22<span class='unit'>℃</span>";
-              document.getElementById("temperature").value = "22";
-              
-              document.getElementById("weather-display").textContent = "晴れ";
-              document.getElementById("weather").value = "晴れ";
             });
           },
           error => {
             console.error("位置情報の取得に失敗しました。", error);
-            // エラー時のデフォルト値設定
-            document.getElementById("location-display").textContent = "東京都";
-            document.getElementById("location").value = "東京都";
-            
-            document.getElementById("temperature-display").innerHTML = "22<span class='unit'>℃</span>";
-            document.getElementById("temperature").value = "22";
-            
-            document.getElementById("weather-display").textContent = "晴れ";
-            document.getElementById("weather").value = "晴れ";
           }
         );
-      } else {
-        // 位置情報APIが使えない場合のデフォルト値
-        document.getElementById("location-display").textContent = "東京都";
-        document.getElementById("location").value = "東京都";
-        
-        document.getElementById("temperature-display").innerHTML = "22<span class='unit'>℃</span>";
-        document.getElementById("temperature").value = "22";
-        
-        document.getElementById("weather-display").textContent = "晴れ";
-        document.getElementById("weather").value = "晴れ";
       }
     });
   </script>
